@@ -1,62 +1,67 @@
-import React, { useState } from 'react';
-import { Container , Typography, Card, Grid, TextField, Button } from '@material-ui/core'
+import React, { useState } from "react";
+import {
+  Typography,
+  TextField,
+  Card,
+  Button,
+  Container,
+  Grid
+} from "@material-ui/core";
 
-import styles from './styles'
+import styles from "./style";
+import { MovieIcon } from '../../icons';
 
-export default () => {
+export default ({ history }) => {
+  const [searchText, setSearchText] = useState("");
 
-    const [buscarPelicula, setBuscarPelicula] = useState('');
-    const classes = styles();
+  const handleSearchTextChange = event => {
+    setSearchText(event.target.value);
+  };
 
-    const handleBuscarPeliculaChange = e => {
-        setBuscarPelicula(e.target.value);
-    };
-    const handleLimpiar = e => {
-        console.log(1);
-    }
-    const handleBuscar = e => {
-        console.log(1);  
-    }
+  const handleClearClick = event => {
+    setSearchText("");
+  };
 
-    return(
-        <Container className ={classes.container}>
-            <Card className ={classes.cardContainer}>
-                <Grid className ={classes.titleGridContainer}>
-                    <Grid>
-                        <Typography className ={classes.title}>Bienvenido</Typography>
-                    </Grid>
-                    
-                </Grid>
-                <TextField
-                    value={buscarPelicula}
-                    placeholder="Buscando..."
-                    className={classes.textFieldSearch}
-                    onChange={handleBuscarPeliculaChange}
-                />
-                <Grid className ={classes.buttonContainer}>
-                    <Button color="secondary" onClick={handleLimpiar}>Limpiar</Button>
-                    <Button className ={classes.searchButton} color="primary" onClick={handleBuscar}>Buscar</Button>
-                </Grid>
-            </Card>
-        </Container>
-    )
-}
+  const handleSearchClick = event => {
+    history.push(`/results?movieName=${searchText}`);
+  };
 
+  const classes = styles();
 
+  return (
+    <Container className={classes.container}>
+      <Card className={classes.cardContainer}>
+        <Grid container className={classes.titleGridContainer}>
+          <Grid>
+            <Typography className={classes.title}>Bienvenido!</Typography>
+          </Grid>
+          <Grid>
+            <MovieIcon className={classes.moviesIcon}/>
+          </Grid>
+        </Grid>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///<Grid> <MovieIcon className={classes.movieIcon}/> </Grid> 
+        <TextField
+          value={searchText}
+          placeholder="Buscar"
+          onChange={handleSearchTextChange}
+          margin="normal"
+          className={classes.textFieldSearch}
+        />
+        <Grid className={classes.buttonsContainer}>
+          <Button onClick={handleClearClick} variant="contained">
+            Limpiar
+          </Button>
+          <Button
+            onClick={handleSearchClick}
+            variant="contained"
+            color="primary"
+						className={classes.searchButton}
+						size="large"
+          >
+            Buscar
+          </Button>
+        </Grid>
+      </Card>
+    </Container>
+  );
+};
